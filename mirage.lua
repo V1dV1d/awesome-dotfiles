@@ -37,12 +37,18 @@ mirage.initialize = function()
    local icon_dir = gears.filesystem.get_configuration_dir() .. "/icons/tags/mirage/"
    -- Set up each screen (add tags & panels)
    awful.screen.connect_for_each_screen(function(s)
+      local lay = awful.layout.suit.tile
+      if s.workarea.width < s.workarea.height then
+         -- vertical monitor
+         lay = awful.layout.suit.tile.bottom
+      end
+
       for i = 1, 7, 1
       do
          awful.tag.add(i, {
             icon = icon_dir .. i .. ".png",
             icon_only = true,
-            layout = awful.layout.suit.tile,
+            layout = lay,
             screen = s,
             selected = i == 1
          })

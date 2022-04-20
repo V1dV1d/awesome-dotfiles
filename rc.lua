@@ -136,6 +136,21 @@ end)
 -- Screen Change Functions (ie multi monitor)
 -- ===================================================================
 
+local inspect = require('inspect')
+
+awful.screen.connect_for_each_screen(function(s)
+	print("Screen: " .. s.index .. ", Res: " .. s.workarea.width .. "x" .. s.workarea.height)
+	if s.workarea.width < s.workarea.height then
+		print("Screen " .. s.index .. " is vertical")
+		print(inspect(s.tags))
+		awful.tag.add("tile down", {
+			layout = awful.layout.suit.tile.bottom,
+			screen = s,
+			selected = true,
+		})
+		print(inspect(s.tags))
+	end
+end)
 
 -- Reload config when screen geometry changes
 screen.connect_signal("property::geometry", awesome.restart)
