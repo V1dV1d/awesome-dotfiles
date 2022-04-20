@@ -17,6 +17,8 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
+local standard_timezone = "Europe/Berlin"
+
 local calendar = {}
 
 
@@ -26,16 +28,38 @@ local calendar = {}
 
 
 calendar.create = function(screen)
-   -- Clock / Calendar 12h format
    -- Get Time/Date format using `man strftime`
-   local clock_widget = wibox.widget.textclock("<span font='" .. beautiful.title_font .."'>%l:%M %p</span>", 1)
+   local clock_widget = nil
+   cr_tz = io.popen("timedatectl show -p Timezone --value"):read("*a"):gsub("%s","")
+   if cr_tz == standard_timezone then
+		clock_widget = wibox.widget.textclock("<span font='" .. beautiful.title_font .."'>%k:%M</span>", 1)
+   else
+	   clock_widget = wibox.widget {
+		   spacing = 15,
+		   wibox.widget.textclock(
+		      "<span font='"
+			  .. beautiful.title_font
+			  .."'>"
+			  .. string.match(cr_tz, "/(%w+)$")
+			  .. ": %H:%M</span>",1),
+		   wibox.widget.textclock(
+		      "<span font='"
+			  .. beautiful.title_font
+			  .."'>"
+			  .. string.match(standard_timezone, "/(%w+)$")
+			  .. ": %H:%M</span>",
+			  1, standard_timezone),
+		   layout = wibox.layout.fixed.horizontal,
+	   }
+   end
 
    -- Alternative to naughty.notify - tooltip. You can compare both and choose the preferred one
    awful.tooltip({
       objects = {clock_widget},
       mode = "outside",
-      align = "right",
-      timer_function = function()
+	  preffered_positions = "bottom",
+      preferred_alignments = "middle",
+	  timer_function = function()
          return os.date("The date today is %B %d, %Y.")
       end,
       preferred_positions = {"right", "left", "top", "bottom"},
