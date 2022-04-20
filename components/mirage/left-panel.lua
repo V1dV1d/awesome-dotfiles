@@ -59,10 +59,10 @@ left_panel.create = function(s)
    panel:setup {
       expand = "none",
       layout = wibox.layout.align.vertical,
-      wibox.layout.margin(require("widgets.layout-box"), dpi(13), dpi(13), dpi(13), dpi(13)),
+      wibox.container.margin(require("widgets.layout-box"), dpi(13), dpi(13), dpi(13), dpi(13)),
       {
          layout = wibox.layout.fixed.vertical,
-         wibox.layout.margin(tag_list.create(s), dpi(5), dpi(5), 0, 0)
+         wibox.container.margin(tag_list.create(s), dpi(5), dpi(5), 0, 0)
       },
       nil
    }

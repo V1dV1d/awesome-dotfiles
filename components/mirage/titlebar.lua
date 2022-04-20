@@ -29,9 +29,9 @@ client.connect_signal("request::titlebars", function(c)
    titlebar: setup {
       {
          -- AwesomeWM native buttons (images loaded from theme)
-         wibox.layout.margin(awful.titlebar.widget.closebutton(c), dpi(11), dpi(5), dpi(5), dpi(5)),
-         wibox.layout.margin(awful.titlebar.widget.minimizebutton(c), dpi(4), dpi(5), dpi(5), dpi(5)),
-         wibox.layout.margin(awful.titlebar.widget.maximizedbutton(c), dpi(4), dpi(5), dpi(5), dpi(5)),
+         wibox.container.margin(awful.titlebar.widget.closebutton(c), dpi(11), dpi(5), dpi(5), dpi(5)),
+         wibox.container.margin(awful.titlebar.widget.minimizebutton(c), dpi(4), dpi(5), dpi(5), dpi(5)),
+         wibox.container.margin(awful.titlebar.widget.maximizedbutton(c), dpi(4), dpi(5), dpi(5), dpi(5)),
          layout = wibox.layout.fixed.horizontal
       },
       nil,
