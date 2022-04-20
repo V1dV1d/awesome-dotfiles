@@ -9,7 +9,6 @@
 -- Initialization
 -- ===================================================================
 
-
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
@@ -20,14 +19,11 @@ local dpi = beautiful.xresources.apply_dpi
 -- define module table
 local top_panel = {}
 
-
 -- ===================================================================
 -- Bar Creation
 -- ===================================================================
 
-
 top_panel.create = function(s)
-
    local panel = wibox({
       screen = s,
       position = "top",
@@ -40,30 +36,36 @@ top_panel.create = function(s)
    })
 
    panel:struts({
-      top = beautiful.top_panel_height
+      top = beautiful.top_panel_height,
    })
 
-   panel:setup {
+   panel:setup({
       expand = "none",
       layout = wibox.layout.align.horizontal,
       nil,
       require("widgets.calendar").create(s),
       {
          spacing = 5,
-		 layout = wibox.layout.fixed.horizontal,
-         wibox.container.margin(wibox.widget.systray(), dpi(5), dpi(5), dpi(5), dpi(5)),
+         layout = wibox.layout.fixed.horizontal,
+         wibox.container.margin(
+            wibox.widget.systray(),
+            dpi(5),
+            dpi(5),
+            dpi(5),
+            dpi(5)
+         ),
          require("awesome-wm-widgets.volume-widget.volume")({
-			 widget_type = "arc",
-		 }),
-		 --require("widgets.bluetooth"),
-		 --require("widgets.network")(),
+            widget_type = "arc",
+         }),
+         --require("widgets.bluetooth"),
+         --require("widgets.network")(),
          require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
-			 -- show_current_level = true,
-			 charging_color = "#ffffff",
-			 font = "Play Bold 6",
-		 }),
-      }
-   }
+            -- show_current_level = true,
+            charging_color = "#ffffff",
+            font = "Play Bold 6",
+         }),
+      },
+   })
 
    local panel_bg = wibox({
       screen = s,
@@ -72,14 +74,12 @@ top_panel.create = function(s)
       height = beautiful.top_panel_height,
       width = s.geometry.width,
       bg = beautiful.bg_dark,
-      visible = false
+      visible = false,
    })
-
 
    -- ===================================================================
    -- Functionality
    -- ===================================================================
-
 
    -- hide panel when client is fullscreen
    local function change_panel_visibility(client)
@@ -109,7 +109,9 @@ top_panel.create = function(s)
    end)
 
    client.connect_signal("manage", function(c)
-      if awful.tag.getproperty(c.first_tag, "layout") == awful.layout.suit.max then
+      if
+         awful.tag.getproperty(c.first_tag, "layout") == awful.layout.suit.max
+      then
          toggle_maximize_top_panel(true)
       end
    end)
@@ -127,7 +129,7 @@ top_panel.create = function(s)
          end
          toggle_maximize_top_panel(false)
 
-      -- if tag was maximized
+         -- if tag was maximized
       elseif awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if any clients are open (and therefore maximized)
          for _ in pairs(t:clients()) do
@@ -140,7 +142,7 @@ top_panel.create = function(s)
    -- maximize if layout is maximized and a client is in the layout
    tag.connect_signal("property::layout", function(t)
       -- check if layout is maximized
-      if (awful.tag.getproperty(t, "layout") == awful.layout.suit.max) then
+      if awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if clients are open
          for _ in pairs(t:clients()) do
             toggle_maximize_top_panel(true)
@@ -155,7 +157,7 @@ top_panel.create = function(s)
    -- maximize if a tag is swapped to with a maximized client
    tag.connect_signal("property::selected", function(t)
       -- check if layout is maximized
-      if (awful.tag.getproperty(t, "layout") == awful.layout.suit.max) then
+      if awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if clients are open
          for _ in pairs(t:clients()) do
             toggle_maximize_top_panel(true)
@@ -173,7 +175,6 @@ top_panel.create = function(s)
          toggle_maximize_top_panel(false)
       end
    end)
-
 end
 
 return top_panel

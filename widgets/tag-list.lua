@@ -9,22 +9,19 @@
 -- Initialization
 -- ===================================================================
 
-
-local awful = require('awful')
-local wibox = require('wibox')
-local dpi = require('beautiful').xresources.apply_dpi
-local capi = {button = button}
-local clickable_container = require('widgets.clickable-container')
-local modkey = require('keys').modkey
+local awful = require("awful")
+local wibox = require("wibox")
+local dpi = require("beautiful").xresources.apply_dpi
+local capi = { button = button }
+local clickable_container = require("widgets.clickable-container")
+local modkey = require("keys").modkey
 
 -- define module table
 local tag_list = {}
 
-
 -- ===================================================================
 -- Widget Creation Functions
 -- ===================================================================
-
 
 -- Create buttons
 local function create_buttons(buttons, object)
@@ -35,17 +32,13 @@ local function create_buttons(buttons, object)
          -- press and release events, and will propagate them to the
          -- button object the user provided, but with the object as
          -- argument.
-         local btn = capi.button {modifiers = b.modifiers, button = b.button}
-         btn:connect_signal('press',
-            function()
-               b:emit_signal('press', object)
-            end
-         )
-         btn:connect_signal('release',
-            function()
-               b:emit_signal('release', object)
-            end
-         )
+         local btn = capi.button({ modifiers = b.modifiers, button = b.button })
+         btn:connect_signal("press", function()
+            b:emit_signal("press", object)
+         end)
+         btn:connect_signal("release", function()
+            b:emit_signal("release", object)
+         end)
          btns[#btns + 1] = btn
       end
 
@@ -72,7 +65,13 @@ local function list_update(w, buttons, label, data, objects)
          tb = wibox.widget.textbox()
          bgb = wibox.container.background()
          tbm = wibox.container.margin(tb, dpi(4), dpi(16))
-         ibm = wibox.container.margin(ib, dpi(icondpi), dpi(icondpi), dpi(icondpi), dpi(icondpi))
+         ibm = wibox.container.margin(
+            ib,
+            dpi(icondpi),
+            dpi(icondpi),
+            dpi(icondpi),
+            dpi(icondpi)
+         )
          l = wibox.layout.fixed.horizontal()
          bg_clickable = clickable_container()
 
@@ -91,7 +90,7 @@ local function list_update(w, buttons, label, data, objects)
             tb = tb,
             bgb = bgb,
             tbm = tbm,
-            ibm = ibm
+            ibm = ibm,
          }
       end
 
@@ -99,7 +98,7 @@ local function list_update(w, buttons, label, data, objects)
       args = args or {}
 
       bgb:set_bg(bg)
-      if type(bg_image) == 'function' then
+      if type(bg_image) == "function" then
          -- TODO: Why does this pass nil as an argument?
          bg_image = bg_image(tb, o, nil, objects, i)
       end
@@ -125,39 +124,27 @@ tag_list.create = function(s)
       s,
       awful.widget.taglist.filter.all,
       awful.util.table.join(
-         awful.button({}, 1,
-            function(t)
+         awful.button({}, 1, function(t)
+            t:view_only()
+         end),
+         awful.button({ modkey }, 1, function(t)
+            if client.focus then
+               client.focus:move_to_tag(t)
                t:view_only()
             end
-         ),
-         awful.button({modkey}, 1,
-            function(t)
-               if client.focus then
-                  client.focus:move_to_tag(t)
-                  t:view_only()
-               end
+         end),
+         awful.button({}, 3, awful.tag.viewtoggle),
+         awful.button({ modkey }, 3, function(t)
+            if client.focus then
+               client.focus:toggle_tag(t)
             end
-         ),
-         awful.button({}, 3,
-            awful.tag.viewtoggle
-         ),
-         awful.button({modkey}, 3,
-            function(t)
-               if client.focus then
-                  client.focus:toggle_tag(t)
-               end
-            end
-         ),
-         awful.button({}, 4,
-            function(t)
-               awful.tag.viewprev(t.screen)
-            end
-         ),
-         awful.button({}, 5,
-            function(t)
-               awful.tag.viewnext(t.screen)
-            end
-         )
+         end),
+         awful.button({}, 4, function(t)
+            awful.tag.viewprev(t.screen)
+         end),
+         awful.button({}, 5, function(t)
+            awful.tag.viewnext(t.screen)
+         end)
       ),
       {},
       list_update,

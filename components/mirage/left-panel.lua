@@ -9,7 +9,6 @@
 -- Initialization
 -- ===================================================================
 
-
 local beautiful = require("beautiful")
 local wibox = require("wibox")
 local dpi = beautiful.xresources.apply_dpi
@@ -25,16 +24,22 @@ local home_dir = os.getenv("HOME")
 -- define module table
 local left_panel = {}
 
-
 -- ===================================================================
 -- Bar Creation
 -- ===================================================================
 
-
 left_panel.create = function(s)
-
    local panel_shape = function(cr, width, height)
-      gears.shape.partially_rounded_rect(cr, width, height, false, true, true, false, 40)
+      gears.shape.partially_rounded_rect(
+         cr,
+         width,
+         height,
+         false,
+         true,
+         true,
+         false,
+         40
+      )
    end
    local maximized_panel_shape = function(cr, width, height)
       gears.shape.rectangle(cr, width, height)
@@ -48,30 +53,34 @@ left_panel.create = function(s)
       ontop = true,
       visible = true,
       bg = beautiful.bg_dark,
-      type = 'dock',
-      shape = panel_shape
+      type = "dock",
+      shape = panel_shape,
    })
 
    panel:struts({
-      left = beautiful.left_panel_width
+      left = beautiful.left_panel_width,
    })
 
-   panel:setup {
+   panel:setup({
       expand = "none",
       layout = wibox.layout.align.vertical,
-      wibox.container.margin(require("widgets.layout-box"), dpi(13), dpi(13), dpi(13), dpi(13)),
+      wibox.container.margin(
+         require("widgets.layout-box"),
+         dpi(13),
+         dpi(13),
+         dpi(13),
+         dpi(13)
+      ),
       {
          layout = wibox.layout.fixed.vertical,
-         wibox.container.margin(tag_list.create(s), dpi(5), dpi(5), 0, 0)
+         wibox.container.margin(tag_list.create(s), dpi(5), dpi(5), 0, 0),
       },
-      nil
-   }
+      nil,
+   })
 
-  
    -- ===================================================================
    -- Functionality
    -- ===================================================================
-
 
    -- hide panel when client is fullscreen
    local function change_panel_visibility(client)
@@ -101,7 +110,9 @@ left_panel.create = function(s)
    end)
 
    client.connect_signal("manage", function(c)
-      if awful.tag.getproperty(c.first_tag, "layout") == awful.layout.suit.max then
+      if
+         awful.tag.getproperty(c.first_tag, "layout") == awful.layout.suit.max
+      then
          toggle_maximize_left_panel(true)
       end
    end)
@@ -119,7 +130,7 @@ left_panel.create = function(s)
          end
          toggle_maximize_left_panel(false)
 
-      -- if tag was maximized
+         -- if tag was maximized
       elseif awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if any clients are open (and therefore maximized)
          for _ in pairs(t:clients()) do
@@ -132,7 +143,7 @@ left_panel.create = function(s)
    -- maximize if layout is maximized and a client is in the layout
    tag.connect_signal("property::layout", function(t)
       -- check if layout is maximized
-      if (awful.tag.getproperty(t, "layout") == awful.layout.suit.max) then
+      if awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if clients are open
          for _ in pairs(t:clients()) do
             toggle_maximize_left_panel(true)
@@ -147,7 +158,7 @@ left_panel.create = function(s)
    -- maximize if a tag is swapped to with a maximized client
    tag.connect_signal("property::selected", function(t)
       -- check if layout is maximized
-      if (awful.tag.getproperty(t, "layout") == awful.layout.suit.max) then
+      if awful.tag.getproperty(t, "layout") == awful.layout.suit.max then
          -- check if clients are open
          for _ in pairs(t:clients()) do
             toggle_maximize_left_panel(true)
@@ -165,7 +176,6 @@ left_panel.create = function(s)
          toggle_maximize_left_panel(false)
       end
    end)
-
 end
 
 return left_panel

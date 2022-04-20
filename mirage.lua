@@ -9,21 +9,20 @@
 -- Initialization
 -- ===================================================================
 
-
 local awful = require("awful")
 local gears = require("gears")
 
 local mirage = {}
 
-
 -- ===================================================================
 -- Mirage setup
 -- ===================================================================
 
-
 mirage.initialize = function()
    -- Set Wallpaper
-   gears.wallpaper.maximized(gears.filesystem.get_configuration_dir() .. "/wallpaper/mirage.png")
+   gears.wallpaper.maximized(
+      gears.filesystem.get_configuration_dir() .. "/wallpaper/mirage.png"
+   )
 
    -- Import components
    require("components.exit-screen")
@@ -34,7 +33,8 @@ mirage.initialize = function()
    local left_panel = require("components.mirage.left-panel")
    local top_panel = require("components.mirage.top-panel")
 
-   local icon_dir = gears.filesystem.get_configuration_dir() .. "/icons/tags/mirage/"
+   local icon_dir = gears.filesystem.get_configuration_dir()
+      .. "/icons/tags/mirage/"
    -- Set up each screen (add tags & panels)
    awful.screen.connect_for_each_screen(function(s)
       local lay = awful.layout.suit.tile
@@ -43,14 +43,13 @@ mirage.initialize = function()
          lay = awful.layout.suit.tile.bottom
       end
 
-      for i = 1, 7, 1
-      do
+      for i = 1, 7, 1 do
          awful.tag.add(i, {
             icon = icon_dir .. i .. ".png",
             icon_only = true,
             layout = lay,
             screen = s,
-            selected = i == 1
+            selected = i == 1,
          })
       end
 
