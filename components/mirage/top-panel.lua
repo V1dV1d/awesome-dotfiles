@@ -49,11 +49,19 @@ top_panel.create = function(s)
       nil,
       require("widgets.calendar").create(s),
       {
-         layout = wibox.layout.fixed.horizontal,
-         wibox.layout.margin(wibox.widget.systray(), dpi(5), dpi(5), dpi(5), dpi(5)),
-         require("widgets.bluetooth"),
-         require("widgets.network")(),
-         require("widgets.battery")
+         spacing = 5,
+		 layout = wibox.layout.fixed.horizontal,
+         wibox.container.margin(wibox.widget.systray(), dpi(5), dpi(5), dpi(5), dpi(5)),
+         require("awesome-wm-widgets.volume-widget.volume")({
+			 widget_type = "arc",
+		 }),
+		 --require("widgets.bluetooth"),
+		 --require("widgets.network")(),
+         require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
+			 -- show_current_level = true,
+			 charging_color = "#ffffff",
+			 font = "Play Bold 6",
+		 }),
       }
    }
 
