@@ -50,16 +50,18 @@ top_panel.create = function(s)
          wibox.container.margin(
             wibox.widget.systray(),
             dpi(5),
-            dpi(5),
+            dpi(0),
             dpi(5),
             dpi(5)
          ),
          require("awesome-wm-widgets.volume-widget.volume")({
+            bg_color = "#ffffff33",
             widget_type = "arc",
          }),
          --require("widgets.bluetooth"),
          require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
             -- show_current_level = true,
+            bg_color = "#ffffff33",
             charging_color = "#ffffff",
             font = "Play Bold 6",
          }),
