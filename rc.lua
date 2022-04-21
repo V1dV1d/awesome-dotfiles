@@ -52,6 +52,7 @@ local run_on_start_up = {
       .. "picom.conf",
    "redshift",
    "unclutter",
+   "nm-applet",
 }
 
 -- ===================================================================
