@@ -58,7 +58,6 @@ top_panel.create = function(s)
             bg_color = "#ffffff33",
             widget_type = "arc",
          }),
-         --require("widgets.bluetooth"),
          require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
             -- show_current_level = true,
             bg_color = "#ffffff33",
