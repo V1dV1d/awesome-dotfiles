@@ -26,7 +26,7 @@ mirage.initialize = function()
 
    -- Import components
    require("components.exit-screen")
-   require("components.volume-adjust")
+   require("components.prop-adjust")
    require("components.mirage.titlebar")
 
    -- Import panels
