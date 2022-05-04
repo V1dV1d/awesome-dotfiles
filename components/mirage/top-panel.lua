@@ -26,11 +26,11 @@ local top_panel = {}
 top_panel.create = function(s)
    local panel = wibox({
       screen = s,
-      position = "top",
+      x = beautiful.left_panel_width,
       ontop = true,
       visible = true,
       height = beautiful.top_panel_height,
-      width = s.geometry.width,
+      width = s.geometry.width - beautiful.left_panel_width,
       bg = "#00000000",
       type = "dock",
    })
@@ -42,7 +42,7 @@ top_panel.create = function(s)
    panel:setup({
       expand = "none",
       layout = wibox.layout.align.horizontal,
-      nil,
+      require("awesome-wm-widgets.todo-widget.todo")(),
       require("widgets.calendar").create(s),
       {
          spacing = 5,
