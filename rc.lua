@@ -13,13 +13,7 @@ local awful = require("awful")
 -- User Configuration
 -- ===================================================================
 
-local themes = {
-   "pastel", -- 1
-   "mirage", -- 2
-}
-
--- change this number to use the corresponding theme
-local theme = themes[2]
+local theme = "mirage"
 local theme_config_dir = gears.filesystem.get_configuration_dir()
    .. "/configuration/"
    .. theme
@@ -152,8 +146,6 @@ end)
 -- Screen Change Functions (ie multi monitor)
 -- ===================================================================
 
-local inspect = require("inspect")
-
 awful.screen.connect_for_each_screen(function(s)
    print(
       "Screen: "
@@ -165,13 +157,11 @@ awful.screen.connect_for_each_screen(function(s)
    )
    if s.workarea.width < s.workarea.height then
       print("Screen " .. s.index .. " is vertical")
-      print(inspect(s.tags))
       awful.tag.add("tile down", {
          layout = awful.layout.suit.tile.bottom,
          screen = s,
          selected = true,
       })
-      print(inspect(s.tags))
    end
 end)
 
