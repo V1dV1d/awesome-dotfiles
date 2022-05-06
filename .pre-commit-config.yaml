@@ -21,3 +21,10 @@ repos:
       args: [--autofix, --indent, '3']
    -  id: pretty-format-toml
       args: [--autofix]
+
+-  repo: https://github.com/jumanjihouse/pre-commit-hooks
+   rev: 2.1.6
+   hooks:
+   -  id: shellcheck
+   -  id: shfmt
+      args: [-i, '3', -bn, -ci]

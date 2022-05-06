@@ -1,0 +1,35 @@
+#!/bin/bash
+
+bright_step=5
+
+increase_brightness() {
+   if [ "$(brightnessctl get)" -eq 0 ]; then
+      brightnessctl -q set 1
+   else
+      brightnessctl -q set "+$bright_step%"
+   fi
+}
+
+decrease_brightness() {
+   if [ "$(brightnessctl get)" -eq 1 ]; then
+      brightnessctl -q set 0
+   else
+      cr_br=$(($(brightnessctl get) * 100 / $(brightnessctl max)))
+      if [ "$cr_br" -le "$bright_step" ]; then
+         brightnessctl -q set 1
+      else
+         brightnessctl -q set "$bright_step%-"
+      fi
+   fi
+}
+
+# call the declared function
+# Check if the function exists (bash specific)
+if declare -f "$1" >/dev/null; then
+   # call arguments verbatim
+   "$@"
+else
+   # Show a helpful error
+   echo "'$1' is not a known function name" >&2
+   exit 1
+fi

@@ -170,12 +170,20 @@ keys.globalkeys = gears.table.join(
 
    -- Brightness
    awful.key({}, "XF86MonBrightnessUp", function()
-      awful.spawn("brightnessctl set +10%", false)
-      awesome.emit_signal("brightness_change")
+      awful.spawn.easy_async_with_shell(
+         "~/.config/awesome/shell-functions increase_brightness",
+         function()
+            awesome.emit_signal("brightness_change")
+         end
+      )
    end, { description = "brightness up", group = "hotkeys" }),
    awful.key({}, "XF86MonBrightnessDown", function()
-      awful.spawn("brightnessctl set 10%-", false)
-      awesome.emit_signal("brightness_change")
+      awful.spawn.easy_async_with_shell(
+         "~/.config/awesome/shell-functions decrease_brightness",
+         function()
+            awesome.emit_signal("brightness_change")
+         end
+      )
    end, { description = "brightness down", group = "hotkeys" }),
 
    -- ALSA volume control
