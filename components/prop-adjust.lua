@@ -77,7 +77,7 @@ local hide_prop_adjust = gears.timer({
 awesome.connect_signal("volume_change", function()
    -- set new volume value
    awful.spawn.easy_async_with_shell(
-      "amixer sget Master | grep 'Right:' | awk -F '[][]' '{print $2}'| sed 's/[^0-9]//g'",
+      "amixer sget Master | grep 'Right:' | awk -F '[][]' '{print ($4 == \"on\") ? $2 : 0}' | sed 's/[^0-9]//g'",
       function(stdout)
          local volume_level = tonumber(stdout)
          prop_bar.value = volume_level
