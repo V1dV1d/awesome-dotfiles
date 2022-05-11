@@ -67,10 +67,12 @@ top_panel.create = function(s)
             bg_color = "#ffffff33",
             widget_type = "arc",
          }),
-         require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
+         io.popen("acpi -b 2>&1"):read(10) ~= "No support" and require(
+            "awesome-wm-widgets.batteryarc-widget.batteryarc"
+         )({
             bg_color = "#ffffff33",
             charging_color = "#ffffff",
-         }),
+         }) or nil,
       },
    })
 
