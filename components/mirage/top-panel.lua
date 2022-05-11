@@ -26,11 +26,10 @@ local top_panel = {}
 top_panel.create = function(s)
    local panel = wibox({
       screen = s,
-      x = beautiful.left_panel_width,
       ontop = true,
       visible = true,
       height = beautiful.top_panel_height,
-      width = s.geometry.width - beautiful.left_panel_width,
+      width = s.geometry.width,
       bg = "#00000000",
       type = "dock",
    })
@@ -42,8 +41,18 @@ top_panel.create = function(s)
    panel:setup({
       expand = "none",
       layout = wibox.layout.align.horizontal,
-      require("awesome-wm-widgets.todo-widget.todo")(),
+      -- left side of top panel
+      {
+         layout = wibox.layout.fixed.horizontal,
+         -- padding so top and left panel do not overlap
+         s.index == 1 and wibox.widget({
+            forced_width = beautiful.left_panel_width,
+         }) or nil,
+         require("awesome-wm-widgets.todo-widget.todo")(),
+      },
+      -- middle of top panel
       require("widgets.calendar").create(s),
+      -- right side of top panel
       {
          spacing = 5,
          layout = wibox.layout.fixed.horizontal,
@@ -59,10 +68,8 @@ top_panel.create = function(s)
             widget_type = "arc",
          }),
          require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
-            -- show_current_level = true,
             bg_color = "#ffffff33",
             charging_color = "#ffffff",
-            font = "Play Bold 6",
          }),
       },
    })
