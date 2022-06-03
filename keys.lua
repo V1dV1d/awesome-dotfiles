@@ -167,6 +167,10 @@ keys.globalkeys = gears.table.join(
    awful.key({ modkey }, "b", function()
       awful.spawn("xdg-open http://")
    end, { description = "open a browser", group = "launcher" }),
+   -- spawn file explorer on home dir
+   awful.key({ modkey }, "e", function()
+      awful.spawn.with_shell('xdg-open "$HOME"')
+   end, { description = "open file browser", group = "launcher" }),
 
    -- =========================================
    -- FUNCTION KEYS
