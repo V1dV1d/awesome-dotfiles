@@ -155,6 +155,19 @@ function rules.create(clientkeys, clientbuttons)
             height = screen_height * 0.45,
          },
       },
+
+      -- Put messaging on tag 3
+      {
+         rule_any = {
+            class = {
+               "Signal",
+               "TelegramDesktop",
+               "whatsapp-nativefier-d40211",
+               "discord",
+            },
+         },
+         properties = { tag = "3" },
+      },
    }
 end
 
