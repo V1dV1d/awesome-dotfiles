@@ -163,6 +163,10 @@ keys.globalkeys = gears.table.join(
    awful.key({ modkey }, "d", function()
       awful.spawn(apps.launcher)
    end, { description = "application launcher", group = "launcher" }),
+   -- spawn default browser
+   awful.key({ modkey }, "b", function()
+      awful.spawn("xdg-open http://")
+   end, { description = "open a browser", group = "launcher" }),
 
    -- =========================================
    -- FUNCTION KEYS
