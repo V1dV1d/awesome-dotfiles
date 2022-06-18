@@ -64,6 +64,13 @@ function rules.create(clientkeys, clientbuttons)
             placement = awful.placement.centered,
          },
       },
+      -- VLC fullscreen controls dont need a titlebar
+      {
+         rule = { class = "vlc", requests_no_titlebar = true },
+         properties = {
+            titlebars_enabled = false,
+         },
+      },
       -- Floating clients.
       {
          rule_any = {
