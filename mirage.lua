@@ -27,7 +27,9 @@ mirage.initialize = function()
    -- Import components
    require("components.exit-screen")
    require("components.prop-adjust")
-   require("components.mirage.titlebar")
+   -- require("components.mirage.titlebar")
+   local nice = require("nice")
+   nice()
 
    -- Import panels
    local left_panel = require("components.mirage.left-panel")
