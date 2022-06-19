@@ -56,13 +56,20 @@ top_panel.create = function(s)
       {
          spacing = 5,
          layout = wibox.layout.fixed.horizontal,
-         wibox.container.margin(
-            wibox.widget.systray(),
-            dpi(5),
-            dpi(0),
-            dpi(5),
-            dpi(5)
-         ),
+         wibox.widget({
+            {
+               wibox.widget.systray(),
+               left = dpi(14),
+               top = dpi(2),
+               bottom = dpi(2),
+               right = dpi(14),
+               widget = wibox.container.margin,
+            },
+            bg = beautiful.bg_systray,
+            shape = gears.shape.rounded_bar,
+            shape_clip = true,
+            widget = wibox.container.background,
+         }),
          require("awesome-wm-widgets.volume-widget.volume")({
             bg_color = "#ffffff33",
             widget_type = "arc",
