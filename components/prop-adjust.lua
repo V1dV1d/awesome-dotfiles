@@ -17,7 +17,7 @@ local dpi = beautiful.xresources.apply_dpi
 
 local offsetx = dpi(56)
 local offsety = dpi(300)
-local screen = awful.screen.focused()
+local scr = screen.primary
 local icon_dir = gears.filesystem.get_configuration_dir()
    .. "/icons/volume/"
    .. beautiful.name
@@ -33,9 +33,9 @@ local prop_icon = wibox.widget({
 
 -- create the prop_adjust component
 local prop_adjust = wibox({
-   screen = awful.screen.focused(),
-   x = screen.geometry.width - offsetx,
-   y = (screen.geometry.height / 2) - (offsety / 2),
+   screen = scr,
+   x = scr.geometry.width + scr.geometry.x - offsetx,
+   y = (scr.geometry.height / 2) + scr.geometry.y - (offsety / 2),
    width = dpi(48),
    height = offsety,
    shape = gears.shape.rounded_rect,
@@ -77,16 +77,22 @@ local hide_prop_adjust = gears.timer({
 awesome.connect_signal("volume_change", function()
    -- set new volume value
    awful.spawn.easy_async_with_shell(
-      "amixer sget Master | grep 'Right:' | awk -F '[][]' '{print ($4 == \"on\") ? $2 : 0}' | sed 's/[^0-9]//g'",
+      "amixer sget Master | awk -F '[][]' '/Right:/"
+         .. '{gsub("%",""); printf ($4 == "on" ? $2 :"muted")}\'',
       function(stdout)
-         local volume_level = tonumber(stdout)
-         prop_bar.value = volume_level
-         if volume_level > 40 then
-            prop_icon:set_image(icon_dir .. "volume.png")
-         elseif volume_level > 0 then
-            prop_icon:set_image(icon_dir .. "volume-low.png")
+         if stdout:gsub("%s+", "") == "muted" then
+            prop_icon:set_image(icon_dir .. "volume-muted.png")
+            prop_bar.value = 0
          else
-            prop_icon:set_image(icon_dir .. "volume-off.png")
+            local volume_level = tonumber(stdout)
+            prop_bar.value = volume_level
+            if volume_level > 40 then
+               prop_icon:set_image(icon_dir .. "volume-high.png")
+            elseif volume_level > 0 then
+               prop_icon:set_image(icon_dir .. "volume-low.png")
+            else
+               prop_icon:set_image(icon_dir .. "volume-silent.png")
+            end
          end
       end,
       false
@@ -101,7 +107,6 @@ awesome.connect_signal("volume_change", function()
    end
 end)
 
-local naughty = require("naughty")
 -- show prop-adjust when "brightness_change" signal is emitted
 awesome.connect_signal("brightness_change", function()
    -- set new brightness value
