@@ -44,10 +44,12 @@ top_panel.create = function(s)
       -- left side of top panel
       {
          layout = wibox.layout.fixed.horizontal,
-         -- padding so top and left panel do not overlap
-         s.index == 1 and wibox.widget({
-            forced_width = beautiful.left_panel_width,
-         }) or nil,
+         -- padding so top and left panel (should it exist) do not overlap
+         s.index == 1
+               and wibox.widget({
+                  forced_width = beautiful.left_panel_width,
+               })
+            or nil,
          require("awesome-wm-widgets.todo-widget.todo")(),
       },
       -- middle of top panel
@@ -56,30 +58,34 @@ top_panel.create = function(s)
       {
          spacing = 5,
          layout = wibox.layout.fixed.horizontal,
-         wibox.widget({
-            {
-               wibox.widget.systray(),
-               left = dpi(14),
-               top = dpi(2),
-               bottom = dpi(2),
-               right = dpi(14),
-               widget = wibox.container.margin,
-            },
-            bg = beautiful.bg_systray,
-            shape = gears.shape.rounded_bar,
-            shape_clip = true,
-            widget = wibox.container.background,
-         }),
+         -- systray can only be created once, so primary screen it is
+         s.index == 1
+               and wibox.widget({
+                  {
+                     wibox.widget.systray(),
+                     left = dpi(14),
+                     top = dpi(2),
+                     bottom = dpi(2),
+                     right = dpi(14),
+                     widget = wibox.container.margin,
+                  },
+                  bg = beautiful.bg_systray,
+                  shape = gears.shape.rounded_bar,
+                  shape_clip = true,
+                  widget = wibox.container.background,
+               })
+            or nil,
          require("awesome-wm-widgets.volume-widget.volume")({
             bg_color = "#ffffff33",
             widget_type = "arc",
          }),
-         io.popen("acpi -b 2>&1"):read(10) ~= "No support" and require(
-            "awesome-wm-widgets.batteryarc-widget.batteryarc"
-         )({
-            bg_color = "#ffffff33",
-            charging_color = "#ffffff",
-         }) or nil,
+         -- only display battery widget whe acpi can find a battery
+         io.popen("acpi -b 2>&1"):read(10) ~= "No support"
+               and require("awesome-wm-widgets.batteryarc-widget.batteryarc")({
+                  bg_color = "#ffffff33",
+                  charging_color = "#ffffff",
+               })
+            or nil,
       },
    })
 
