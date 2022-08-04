@@ -7,3 +7,6 @@
 [submodule "nice"]
 	path = nice
 	url = https://github.com/raven2cz/awesome-wm-nice.git
+[submodule "lain"]
+	path = lain
+	url = https://github.com/lcpz/lain.git

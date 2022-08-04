@@ -9,6 +9,8 @@
 local gears = require("gears")
 local awful = require("awful")
 
+local lain = require("lain")
+
 -- ===================================================================
 -- User Configuration
 -- ===================================================================
@@ -98,9 +100,10 @@ awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
 -- Define layouts
 awful.layout.layouts = {
+   lain.layout.termfair,
    awful.layout.suit.tile,
    awful.layout.suit.floating,
-   awful.layout.suit.max,
+   awful.layout.suit.fair,
 }
 
 -- remove gaps if layout is set to max
